@@ -1,0 +1,16 @@
+{
+  "name": "discord-status-bot",
+  "version": "0.0.0",
+  "description": "change discord status based on playing spotify music",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "clear && node index.js"
+  },
+  "author": "Sarthak Mohanty <sarthaktexas@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^11.0.0",
+    "dotenv": "^8.2.0"
+  }
+}
