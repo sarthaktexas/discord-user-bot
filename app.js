@@ -2,12 +2,8 @@ require('dotenv').config();
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const fs = require('fs');
 const axios = require('axios');
 const AWS = require('aws-sdk');
-const {
-	ElasticInference
-} = require('aws-sdk');
 var s3 = new AWS.S3({
 	apiVersion: '2006-03-01',
 	region: 'us-east-2',
