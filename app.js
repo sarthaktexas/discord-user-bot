@@ -130,8 +130,6 @@ function createNewObject(link, name) {
 				// Send error message to channel
 				return "uhh we got an invalid filetype in the house. upload a supported filetype. this is a very, *very*, ***very***, rare error which usually means Sarthak fucked up his code somewhere.";
 			}
-			console.log(responseMessage);
-			return responseMessage;
 		});
 }
 
