@@ -2,7 +2,14 @@ require('dotenv').config();
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const Wolfram = require('node-wolfram');
+const fs = require('fs');
+const AWS = require('aws-sdk');
+var s3 = new AWS.S3({
+	apiVersion: '2006-03-01',
+	region: 'us-east-2',
+	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
 
 client.on('ready', () => {
 	console.log('Logged in as ' + client.user.username + '#' + client.user.discriminator);
@@ -18,81 +25,18 @@ client.on('message', msg => {
 		console.log('deleted message: ' + msg.content);
 	} else if (msg.content.startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		msg.channel.send(msg.content.slice(12, msg.content.length));
-	} else if (msg.content.startsWith("math ") && msg.author.id !== '220352311422091264') {
-
-		function WolframPlugin() {
-			this.wolfram = new Wolfram(process.env.WOLFRAM_APP_ID)
-		};
-
-		WolframPlugin.prototype.respond = function (query, channel, bot, tmpMsg) {
-			this.wolfram.query(query, function (error, result) {
-				if (error) {
-					console.log(error);
-					tmpMsg.edit("Couldn't talk to Wolfram Alpha :(")
-				} else {
-					var response = "";
-					if (result.queryresult.$.success == "true") {
-						tmpMsg.delete();
-						if (result.queryresult.hasOwnProperty("warnings")) {
-							for (var i in result.queryresult.warnings) {
-								for (var j in result.queryresult.warnings[i]) {
-									if (j != "$") {
-										try {
-											channel.send(result.queryresult.warnings[i][j][0].$.text);
-										} catch (e) {
-											console.log("WolframAlpha: failed displaying warning:\n" + e.stack());
-										}
-									}
-								}
-							}
-						}
-						if (result.queryresult.hasOwnProperty("assumptions")) {
-							for (var i in result.queryresult.assumptions) {
-								for (var j in result.queryresult.assumptions[i]) {
-									if (j == "assumption") {
-										try {
-											channel.send(`Assuming ${result.queryresult.assumptions[i][j][0].$.word} is ${result.queryresult.assumptions[i][j][0].value[0].$.desc}`);
-										} catch (e) {
-											console.log("WolframAlpha: failed displaying assumption:\n" + e.stack());
-										}
-									}
-								}
-							}
-						}
-						for (var a = 0; a < result.queryresult.pod.length; a++) {
-							var pod = result.queryresult.pod[a];
-							response += "**" + pod.$.title + "**:\n";
-							for (var b = 0; b < pod.subpod.length; b++) {
-								var subpod = pod.subpod[b];
-								//can also display the plain text, but the images are prettier
-								/*for(var c=0; c<subpod.plaintext.length; c++)
-								{
-								    response += '\t'+subpod.plaintext[c];
-								}*/
-								for (var d = 0; d < subpod.img.length; d++) {
-									response += "\n" + subpod.img[d].$.src;
-									channel.send(response);
-									response = "";
-								}
-							}
-							response += "\n";
-						}
-					} else {
-						if (result.queryresult.hasOwnProperty("didyoumeans")) {
-							var msg = [];
-							for (var i in result.queryresult.didyoumeans) {
-								for (var j in result.queryresult.didyoumeans[i].didyoumean) {
-									msg.push(result.queryresult.didyoumeans[i].didyoumean[j]._);
-								}
-							}
-							tmpMsg.edit("Did you mean: " + msg.join(" "));
-						} else {
-							tmpMsg.edit("No results from Wolfram Alpha :(");
-						}
-					}
-				}
+	} else if (msg.content.startsWith("sarthak upload") && msg.author.id !== '220352311422091264') {
+		await message.channel.send("Send your file please..");
+		let filter = m => m.author == message.author; //use that message only if the author is the same
+		message.channel.awaitMessages(filter, {
+			max: 1
+		}).then(msg => {
+			let file = msg.attachments.first().file;
+			fs.readFile(file, (err, data) => {
+				msg.channel.send("Read the file! Fetching data...");
+				msg.channel.send(data);
 			});
-		};
+		});
 	}
 });
 
