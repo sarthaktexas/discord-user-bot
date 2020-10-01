@@ -15,7 +15,7 @@ client.on('ready', () => {
 	console.log('Logged in as ' + client.user.username + '#' + client.user.discriminator);
 });
 
-client.on('message', msg => {
+client.on('message', async msg => {
 	if (msg.isMentioned(client.user) && msg.author.id !== '220352311422091264') {
 		console.log(msg.author);
 		msg.reply('Hey! I\'m not available at the moment. I\'ll get back to you as soon as possible.');
