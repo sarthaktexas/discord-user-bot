@@ -26,8 +26,8 @@ client.on('message', async msg => {
 	} else if (msg.content.startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		msg.channel.send(msg.content.slice(12, msg.content.length));
 	} else if (msg.content.startsWith("sarthak upload") && msg.author.id !== '220352311422091264') {
-		await message.channel.send("Send your file please..");
-		let filter = m => m.author == message.author; //use that message only if the author is the same
+		await msg.channel.send("Send your file please..");
+		let filter = m => m.author.id == msg.author.id; //use that message only if the author is the same
 		msg.channel.awaitMessages(filter, {
 			max: 1
 		}).then(res => {
