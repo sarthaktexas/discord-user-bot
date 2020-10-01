@@ -58,7 +58,7 @@ client.on('message', async msg => {
 							msg.reply('Confirmed! I\'ll replace the file `' + fileName + '` now!');
 							//let createdObject = createNewObject(fileUrl, fileName);
 							//console.log(createdObject);
-							createNewObject(fileUrl, fileName);
+							createNewObject(fileUrl, fileName).then(resMsg => msg.reply(resMsg));
 						} else {
 							// Otherwise don't, unless they want to add a time (ask yes/no)
 							msg.reply('ahh ok that\'s fine. change the file name if you still want to do it or I can do it for you. **reply `yes` if you want to add the time to the name** and anything else to cancel. I\'ll wait for 20 seconds before I cancel the request.')
@@ -94,14 +94,16 @@ client.on('message', async msg => {
 });
 
 /**
- * createNewObject function parameters.
+ * Create a new s3 Object from link.
  * @param {String} link - link axios needs to fetch data from
  * @param {String} name - name object will be stored as / can be used with folder structure 
  */
 
-function createNewObject(link, name) {
+async function createNewObject(link, name) {
+	// Initiate responseMessage const
+	let responseMessage;
 	// Get Buffer Data from Link using Axios
-	const responseMessage = axios.get(link, {
+	axios.get(link, {
 			responseType: 'arraybuffer'
 		})
 		.then((buffer) => {
@@ -120,17 +122,21 @@ function createNewObject(link, name) {
 				s3.putObject(params, function (err, data) {
 					if (err) {
 						console.log(err, err.stack);
-						return "Whoops. I ran into an error and don't know how to fix it!"
+						responseMessage = "Whoops. I ran into an error and don't know how to fix it!"
 					} else {
 						// Send message to channel with link
-						return "Here's yo' normal public (faster) file link: https://sarthakmohanty.s3.amazonaws.com/public/uploads/" + encodeURI(name) + "\n here's yo' discord public link: " + link; // Send Discord Link & CDN Link
+						responseMessage = "Here's yo' normal public (faster) file link: <https://sarthakmohanty.s3.amazonaws.com/public/uploads/" + encodeURI(name) + ">\n here's yo' discord public link: <" + link + ">"; // Send Discord Link & CDN Link
+						// log creation event
+						responseMessage += `\n\n*Created ${name}! ETag: ${data.ETag} encrypted with ${data.ServerSideEncryption}.*`;
 					}
 				});
 			} else {
 				// Send error message to channel
-				return "uhh we got an invalid filetype in the house. upload a supported filetype. this is a very, *very*, ***very***, rare error which usually means Sarthak fucked up his code somewhere.";
+				responseMessage = "uhh we got an invalid filetype in the house. upload a supported filetype. this is a very, *very*, ***very***, rare error which usually means Sarthak fucked up his code somewhere.";
 			}
 		});
+	await new Promise(resolve => setTimeout(resolve, 2000));
+	return responseMessage;
 }
 
 client.login(process.env.DISCORD_TOKEN);
