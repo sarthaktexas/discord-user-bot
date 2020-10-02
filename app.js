@@ -28,7 +28,7 @@ client.on('message', async msg => {
 		// Replace fancy fonts & fancy unicode characters with normal characters.
 		replacedMessageContent = toRegularCharacters(replacedMessageContent);
 		// Get message and replace other commonly used characters
-		replacedMessageContent = replacedMessageContent.toLowerCase().replace(/[.\/\\&:;~$%"<>#!?'`\(\)*^+,_-\s]/g, ""); //.replace(/0/g, "o").replace(/4/g, "a").replace(/@/g, "a").replace(/v/ig, "u");
+		replacedMessageContent = replacedMessageContent.toLowerCase().replace(/[.\/\\&:;~$%"<>#!?'`\(\)*^+,_-\s]/g, "").replace(/©️/g, 'c');
 		console.log(replacedMessageContent);
 		// Check if bad word
 		var badwords = require('./badwords.json')
@@ -178,7 +178,6 @@ const overrides = Object.freeze({
 	'‿': 'u',
 	'Ʊ': 'u',
 	'℉': 'F',
-	'!': 'i',
 	'z': 's',
 	'0': 'o',
 	'4': 'a',
