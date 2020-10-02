@@ -21,7 +21,7 @@ client.on('message', async msg => {
 	if (msg.isMentioned(client.user) && !msg.author.isBot && msg.author.id !== '220352311422091264') {
 		// Auto-Replier
 		msg.reply('Hey! I\'m not available at the moment. I\'ll get back to you as soon as possible.');
-	} else if (msg.content.toLowerCase().startsWith("ping") && msg.authod.id !== '220352311422091264') {
+	} else if (msg.content.toLowerCase().startsWith("ping") && msg.author.id !== '220352311422091264') {
 		let start = now();
 	    	msg.channel.sendMessage("*Pinging...*").then((msg) => {
 	      		let end = now();
