@@ -10,7 +10,6 @@ var s3 = new AWS.S3({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
 	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
-const emojiRegex = require('emoji-regex');
 
 client.on('ready', () => {
 	console.log('Logged in as ' + client.user.username + '#' + client.user.discriminator);
@@ -29,8 +28,7 @@ client.on('message', async msg => {
 		// Replace fancy fonts & fancy unicode characters with normal characters.
 		messageContent = toRegularCharacters(messageContent);
 		// Get message and replace other commonly used characters
-		//emojiRegex().exec(messageContent)
-		let replacedMessageContent = messageContent.toLowerCase().replace(/[!.\/\\&:;~$%"<>#!'`\(\)*^+,_\s]/g, "").replace(/0/g, "o").replace(/4/g, "a").replace(/@/g, "a").replace(/v/ig, "u");
+		let replacedMessageContent = messageContent.toLowerCase().replace(/[!.\/\\&:;~$%"<>#!'`\(\)*^+,_-\s]/g, "").replace(/0/g, "o").replace(/4/g, "a").replace(/@/g, "a").replace(/v/ig, "u");
 		// Check if bad word
 		var badwords = require('./badwords.json')
 		let banned = false;

@@ -16,7 +16,6 @@
     "bad-words": "^3.0.3",
     "diacritic": "0.0.2",
     "discord.js": "^11.0.0",
-    "dotenv": "^8.2.0",
-    "emoji-regex": "^9.0.0"
+    "dotenv": "^8.2.0"
   }
 }
