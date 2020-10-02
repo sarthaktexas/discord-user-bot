@@ -22,16 +22,20 @@ client.on('message', async msg => {
 		// Auto-Replier
 		msg.reply('Hey! I\'m not available at the moment. I\'ll get back to you as soon as possible.');
 	} else if (msg.content.toLowerCase().startsWith("ping") && msg.author.id !== '220352311422091264') {
-		let start = now();
-	    	msg.channel.sendMessage("*Pinging...*").then((msg) => {
-	      		let end = now();
-	      		msg.edit(`Pong! **${(end - start).toFixed(0)}ms**`);
+		let start = Date.now();
+	    	msg.channel.sendMessage("*Pinging...*").then((pingRes) => {
+	      		let end = Date.now();
+	      		pingRes.edit(`Pong! **${(end - start).toFixed(0)}ms**`);
 	    	});
 	} else if (msg.content.toLowerCase().startsWith("avatar") && msg.author.id !== '220352311422091264') {
 		 msg.reply("", {
 		      embed: {
 			color: 0x1c226b,
-			title: msg.author.avatarURL,
+			title: "Avatar",
+			url: msg.author.avatarURL,
+			image: {
+				url: msg.author.avatarURL,
+			},
 		      },
 		 });
 	} else if (msg.content.toLowerCase().startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
