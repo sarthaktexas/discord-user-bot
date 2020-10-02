@@ -19,6 +19,6 @@
     "emoji-regex": "^9.0.0"
   },
   "devDependencies": {
-    "@unicode/unicode-12.1.0": "^1.0.0"
+    "@unicode/unicode-13.0.0": "^1.0.0"
   }
 }

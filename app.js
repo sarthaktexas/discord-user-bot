@@ -167,7 +167,7 @@ async function createNewObject(link, name) {
 	return responseMessage;
 }
 
-const unicodeNames = require('@unicode/unicode-12.1.0/Names');
+const unicodeNames = require('@unicode/unicode-13.0.0/Names');
 
 const overrides = Object.freeze({
 	'ん': 'h',
