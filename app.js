@@ -24,11 +24,12 @@ client.on('message', async msg => {
 		let messageContent = msg.content.slice(12, msg.content.length);
 		// Replace Message Diacritics with normal characters.
 		var Diacritics = require('diacritic');
-		messageContent = Diacritics.clean(messageContent);
+		let replacedMessageContent = Diacritics.clean(messageContent);
 		// Replace fancy fonts & fancy unicode characters with normal characters.
-		messageContent = toRegularCharacters(messageContent);
+		replacedMessageContent = toRegularCharacters(replacedMessageContent);
 		// Get message and replace other commonly used characters
-		let replacedMessageContent = messageContent.toLowerCase().replace(/[!.\/\\&:;~$%"<>#!?'`\(\)*^+,_-\s]/g, "").replace(/0/g, "o").replace(/4/g, "a").replace(/@/g, "a").replace(/v/ig, "u");
+		replacedMessageContent = replacedMessageContent.toLowerCase().replace(/[.\/\\&:;~$%"<>#!?'`\(\)*^+,_-\s]/g, ""); //.replace(/0/g, "o").replace(/4/g, "a").replace(/@/g, "a").replace(/v/ig, "u");
+		console.log(replacedMessageContent);
 		// Check if bad word
 		var badwords = require('./badwords.json')
 		let banned = false;
@@ -177,6 +178,13 @@ const overrides = Object.freeze({
 	'‿': 'u',
 	'Ʊ': 'u',
 	'℉': 'F',
+	'!': 'i',
+	'z': 's',
+	'0': 'o',
+	'4': 'a',
+	'@': 'a',
+	'©️': 'c',
+	'®️': 'R',
 	'🇦': 'a',
 	'🇧': 'b',
 	'🇨': 'c',
