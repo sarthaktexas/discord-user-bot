@@ -10,6 +10,8 @@ var s3 = new AWS.S3({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
 	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
+var Filter = require('bad-words'),
+filter = new Filter();
 
 client.on('ready', () => {
 	console.log('Logged in as ' + client.user.username + '#' + client.user.discriminator);
@@ -21,33 +23,51 @@ client.on('message', async msg => {
 		msg.reply('Hey! I\'m not available at the moment. I\'ll get back to you as soon as possible.');
 	} else if (msg.content.toLowerCase().startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		// Sarthak Say Command
+		let sayBool = true;
 		let messageContent = msg.content.slice(12, msg.content.length);
-		// Replace Message Diacritics with normal characters.
-		var Diacritics = require('diacritic');
-		let replacedMessageContent = Diacritics.clean(messageContent);
-		// Replace fancy fonts & fancy unicode characters with normal characters.
-		replacedMessageContent = toRegularCharacters(replacedMessageContent);
-		// Get message and replace other commonly used characters
-		replacedMessageContent = replacedMessageContent.toLowerCase().replace(/[.\/\\&:;~$%"<>#!?'`\(\)*^+,_-\s]/g, "").replace(/©️/g, 'c');
-		console.log(replacedMessageContent);
-		// Check if bad word
-		var badwords = require('./badwords.json')
-		let banned = false;
-		let bannedWords = '';
-		for (const word of badwords) {
-			if (replacedMessageContent.match(word)) {
-				banned = true;
-				bannedWords += ` ${word}`
+		// Jimmy Easter Egg
+		if (msg.author.username === 'Math_Pro' && msg.author.discriminator === '4856') {
+			sayBool = false;
+			msg.reply('no shut up jim jom.');
+			msg.channel.send('<:jimysmile:757076935565246476>');
+		}
+		// Love Easter Egg
+		var loveWords = ["love", "luv", "lov", "lv"];
+		let loveBanned = false;
+		for (const word of loveWords) {
+			if (messageContent.match(word)) {
+				loveBanned = true;
+				sayBool = false;
 			}
 		}
-		if (banned) {
-			msg.reply('no no no. I can\'t say `' + bannedWords + '`');
-		} else {
-			var Filter = require('bad-words'),
-				filter = new Filter();
-			messageContent = filter.clean(messageContent);
-			// Send message with filtered word
-			msg.channel.send(messageContent);
+		if (loveBanned) {
+			msg.reply(`Love is fake. It's not real. Don't believe in it. BOOOO <@${msg.author.id}>!`);
+		}
+		if (sayBool) {
+			// Replace Message Diacritics with normal characters.
+			var Diacritics = require('diacritic');
+			let replacedMessageContent = Diacritics.clean(messageContent);
+			// Replace fancy fonts & fancy unicode characters with normal characters.
+			replacedMessageContent = toRegularCharacters(replacedMessageContent);
+			// Get message and replace other commonly used characters
+			replacedMessageContent = replacedMessageContent.toLowerCase().replace(/[.\/\\&:;~$%"<>#!?'`\(\)*^+,_-\s]/g, "").replace(/©️/g, 'c');
+			// Check if bad word
+			var badwords = require('./badwords.json')
+			let banned = false;
+			let bannedWords = '';
+			for (const word of badwords) {
+				if (replacedMessageContent.match(word)) {
+					banned = true;
+					bannedWords += ` ${word}`
+				}
+			}
+			if (banned) {
+				msg.reply('no no no. I can\'t say `' + filter.clean(bannedWords) + '`');
+			} else {
+				messageContent = filter.clean(messageContent);
+				// Send message with filtered word
+				msg.channel.send(messageContent);
+			}
 		}
 	} else if (msg.content.toLowerCase().startsWith("sarthak upload") && msg.author.id !== '220352311422091264') {
 		// Upload to s3 Command
