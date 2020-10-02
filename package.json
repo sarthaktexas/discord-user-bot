@@ -10,6 +10,7 @@
   "author": "Sarthak Mohanty <sarthaktexas@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@unicode/unicode-13.0.0": "^1.0.0",
     "aws-sdk": "^2.764.0",
     "axios": "^0.20.0",
     "bad-words": "^3.0.3",
@@ -17,8 +18,5 @@
     "discord.js": "^11.0.0",
     "dotenv": "^8.2.0",
     "emoji-regex": "^9.0.0"
-  },
-  "devDependencies": {
-    "@unicode/unicode-13.0.0": "^1.0.0"
   }
 }
