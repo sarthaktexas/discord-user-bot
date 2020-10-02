@@ -2,7 +2,7 @@
   "name": "discord-status-bot",
   "version": "1.0.0",
   "description": "user bot for discord",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
@@ -12,7 +12,13 @@
   "dependencies": {
     "aws-sdk": "^2.764.0",
     "axios": "^0.20.0",
+    "bad-words": "^3.0.3",
+    "diacritic": "0.0.2",
     "discord.js": "^11.0.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "emoji-regex": "^9.0.0"
+  },
+  "devDependencies": {
+    "@unicode/unicode-12.1.0": "^1.0.0"
   }
 }

@@ -10,6 +10,7 @@ var s3 = new AWS.S3({
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
 	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
+const emojiRegex = require('emoji-regex');
 
 client.on('ready', () => {
 	console.log('Logged in as ' + client.user.username + '#' + client.user.discriminator);
@@ -21,7 +22,34 @@ client.on('message', async msg => {
 		msg.reply('Hey! I\'m not available at the moment. I\'ll get back to you as soon as possible.');
 	} else if (msg.content.toLowerCase().startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		// Sarthak Say Command
-		msg.channel.send(msg.content.slice(12, msg.content.length));
+		let messageContent = msg.content.slice(12, msg.content.length);
+		// Replace Message Diacritics with normal characters.
+		var Diacritics = require('diacritic');
+		messageContent = Diacritics.clean(messageContent);
+		// Replace fancy fonts & fancy unicode characters with normal characters.
+		messageContent = toRegularCharacters(messageContent);
+		// Get message and replace other commonly used characters
+		//emojiRegex().exec(messageContent)
+		let replacedMessageContent = messageContent.toLowerCase().replace(/[!.\/\\&:;~$%"<>#!'`\(\)*^+,_\s]/g, "").replace(/0/g, "o").replace(/4/g, "a").replace(/@/g, "a").replace(/v/ig, "u");
+		// Check if bad word
+		var badwords = require('./badwords.json')
+		let banned = false;
+		let bannedWords = '';
+		for (const word of badwords) {
+			if (replacedMessageContent.match(word)) {
+				banned = true;
+				bannedWords += ` ${word}`
+			}
+		}
+		if (banned) {
+			msg.reply('no no no. I can\'t say `' + bannedWords + '`');
+		} else {
+			var Filter = require('bad-words'),
+				filter = new Filter();
+			messageContent = filter.clean(messageContent);
+			// Send message with filtered word
+			msg.channel.send(messageContent);
+		}
 	} else if (msg.content.toLowerCase().startsWith("sarthak upload") && msg.author.id !== '220352311422091264') {
 		// Upload to s3 Command
 		await msg.channel.send("Send your file please!");
@@ -138,5 +166,90 @@ async function createNewObject(link, name) {
 	await new Promise(resolve => setTimeout(resolve, 2000));
 	return responseMessage;
 }
+
+const unicodeNames = require('@unicode/unicode-12.1.0/Names');
+
+const overrides = Object.freeze({
+	'ん': 'h',
+	'乇': 'E',
+	'ﾚ': 'l',
+	'尺': 'r',
+	'凵': 'u',
+	'◡': 'u',
+	'Ʊ': 'u',
+	'℉': 'F',
+	'🇦': 'a',
+	'🇧': 'b',
+	'🇨': 'c',
+	'🇩': 'd',
+	'🇪': 'e',
+	'🇫': 'f',
+	'🇬': 'g',
+	'🇭': 'h',
+	'🇮': 'i',
+	'🇯': 'j',
+	'🇰': 'k',
+	'🇱': 'l',
+	'🇲': 'm',
+	'🇳': 'n',
+	'🇴': 'o',
+	'🇵': 'p',
+	'🇶': 'q',
+	'🇷': 'r',
+	'🇸': 's',
+	'🇹': 't',
+	'🇺': 'u',
+	'🇻': 'v',
+	'🇼': 'w',
+	'🇽': 'x',
+	'🇾': 'y',
+	'🇿': 'z',
+	// ...
+});
+
+/**
+ * Normalize fancy fonts.
+ * @param {String} xs - string to normalize.
+ */
+
+const toRegularCharacters = xs => {
+	if (typeof xs !== 'string') {
+		throw new TypeError('xs must be a string');
+	}
+
+	return [...xs].map(x => {
+		const override = overrides[x];
+
+		if (override) {
+			return override;
+		}
+
+		const names = unicodeNames
+			.get(x.codePointAt(0))
+			.split(/\s+/);
+
+		// console.log({
+		//   x,
+		//   names,
+		// });
+
+		const isCapital = names.some(x => x == 'CAPITAL');
+
+		const isLetter = isCapital || names.some(x => x == 'SMALL');
+
+		if (isLetter) {
+			// e.g. "Ŧ" is named "LATIN CAPITAL LETTER T WITH STROKE"
+			const c = names.some(x => x == 'WITH') ?
+				names[names.length - 3] :
+				names[names.length - 1];
+
+			return isCapital ?
+				c :
+				c.toLowerCase();
+		}
+
+		return x;
+	}).join('');
+};
 
 client.login(process.env.DISCORD_TOKEN);
