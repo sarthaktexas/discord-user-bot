@@ -21,6 +21,19 @@ client.on('message', async msg => {
 	if (msg.isMentioned(client.user) && !msg.author.isBot && msg.author.id !== '220352311422091264') {
 		// Auto-Replier
 		msg.reply('Hey! I\'m not available at the moment. I\'ll get back to you as soon as possible.');
+	} else if (msg.content.toLowerCase().startsWith("ping") && msg.authod.id !== '220352311422091264') {
+		let start = now();
+	    	msg.channel.sendMessage("*Pinging...*").then((msg) => {
+	      		let end = now();
+	      		msg.edit(`Pong! **${(end - start).toFixed(0)}ms**`);
+	    	});
+	} else if (msg.content.toLowerCase().startsWith("avatar") && msg.author.id !== '220352311422091264') {
+		 msg.reply("", {
+		      embed: {
+			color: 0x1c226b,
+			title: msg.author.avatarURL,
+		      },
+		 });
 	} else if (msg.content.toLowerCase().startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		// Sarthak Say Command
 		let sayBool = true;
