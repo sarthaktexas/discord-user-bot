@@ -28,7 +28,7 @@ client.on('message', async msg => {
 		// Replace fancy fonts & fancy unicode characters with normal characters.
 		messageContent = toRegularCharacters(messageContent);
 		// Get message and replace other commonly used characters
-		let replacedMessageContent = messageContent.toLowerCase().replace(/[!.\/\\&:;~$%"<>#!'`\(\)*^+,_-\s]/g, "").replace(/0/g, "o").replace(/4/g, "a").replace(/@/g, "a").replace(/v/ig, "u");
+		let replacedMessageContent = messageContent.toLowerCase().replace(/[!.\/\\&:;~$%"<>#!?'`\(\)*^+,_-\s]/g, "").replace(/0/g, "o").replace(/4/g, "a").replace(/@/g, "a").replace(/v/ig, "u");
 		// Check if bad word
 		var badwords = require('./badwords.json')
 		let banned = false;
