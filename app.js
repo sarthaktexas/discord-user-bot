@@ -21,13 +21,13 @@ client.on('message', async msg => {
 	if (msg.isMentioned(client.user) && !msg.author.isBot && msg.author.id !== '220352311422091264') {
 		// Auto-Replier
 		msg.reply('Hey! I\'m not available at the moment. I\'ll get back to you as soon as possible.');
-	} else if (msg.content.toLowerCase().startsWith("ping") && msg.author.id !== '220352311422091264') {
+	} else if (msg.content.toLowerCase().startsWith("sarthak ping") && msg.author.id !== '220352311422091264') {
 		let start = Date.now();
 	    	msg.channel.sendMessage("*Pinging...*").then((pingRes) => {
 	      		let end = Date.now();
 	      		pingRes.edit(`Pong! **${(end - start).toFixed(0)}ms**`);
 	    	});
-	} else if (msg.content.toLowerCase().startsWith("avatar") && msg.author.id !== '220352311422091264') {
+	} else if (msg.content.toLowerCase().startsWith("sarthak avatar") && msg.author.id !== '220352311422091264') {
 		 msg.reply("", {
 		      embed: {
 			color: 0x1c226b,
