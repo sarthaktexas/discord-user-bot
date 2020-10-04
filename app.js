@@ -18,8 +18,9 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-	if (msg.isMentioned(client.user) && !msg.author.isBot && msg.author.id !== '220352311422091264') {
+	if (msg.isMentioned(client.user) && !msg.author.bot && msg.author.id !== '220352311422091264') {
 		// Auto-Replier
+		console.log(msg.author);
 		msg.reply('Hey! I\'m not available at the moment. I\'ll get back to you as soon as possible.');
 	} else if (msg.content.toLowerCase().startsWith("sarthak ping") && msg.author.id !== '220352311422091264') {
 		let start = Date.now();
