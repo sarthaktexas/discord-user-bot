@@ -66,12 +66,18 @@ client.on('message', async msg => {
 		if (amount > 100) return msg.reply('You can`t delete more than 100 messages at once!'); // Checks if the `amount` integer is bigger than 100
 		if (amount < 1) return msg.reply('You have to delete at least 1 message!'); // Checks if the `amount` integer is smaller than 1
 
-		await msg.channel.messages.fetch({
+		await msg.delete(); // deletes command message
+
+		await msg.channel.fetchMessages({
 			limit: amount
-		}).then(messages => { // Fetches the messages
-			msg.channel.bulkDelete(messages // Bulk deletes all messages that have been fetched and are not older than 14 days (due to the Discord API)
-			)
-		});
+		}).then(async function (messages) {
+				messages.forEach(message => {
+					if (message.author.id === '220352311422091264') {
+						// if user said it, then delete.
+						message.delete();
+					}
+				});
+			});
 	} else if (msg.content.toLowerCase().startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		// Sarthak Say Command
 		let sayBool = true;
