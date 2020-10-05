@@ -177,27 +177,27 @@ async function createNewObject(link, name) {
 			if (mimeType.length !== 0) {
 				// Set params to upload to s3
 				var params = {
-					Bucket: "sarthakmohanty", // object bucket
+					Bucket: 'sarthakmohanty', // object bucket
 					Body: buffer.data, // buffer data from axios
-					Key: "public/uploads/" + name,
+					Key: 'public/uploads/' + name,
 					ContentType: mimeType, // MIMETYPE from axios
-					ACL: "public-read", // Keeps object public
+					ACL: 'public-read', // Keeps object public
 				};
 				// Upload to s3
 				s3.putObject(params, function (err, data) {
 					if (err) {
 						console.log(err, err.stack);
-						responseMessage = "Whoops. I ran into an error and don't know how to fix it!"
+						responseMessage = 'Whoops. I ran into an error and don\'t know how to fix it!'
 					} else {
 						// Send message to channel with link
-						responseMessage = "Here's yo' normal public (faster) file link: <https://sarthakmohanty.s3.amazonaws.com/public/uploads/" + encodeURI(name) + ">\n here's yo' discord public link: <" + link + ">"; // Send Discord Link & CDN Link
+						responseMessage = 'Here\'s yo\' normal public (faster) file link: <https://sarthakmohanty.s3.amazonaws.com/public/uploads/' + encodeURI(name) + '>\n here\'s yo\' discord public link: <' + link + '>'; // Send Discord Link & CDN Link
 						// log creation event
 						responseMessage += `\n\n*Created ${name}! ETag: ${data.ETag} encrypted with ${data.ServerSideEncryption}.*`;
 					}
 				});
 			} else {
 				// Send error message to channel
-				responseMessage = "uhh we got an invalid filetype in the house. upload a supported filetype. this is a very, *very*, ***very***, rare error which usually means Sarthak fucked up his code somewhere.";
+				responseMessage = 'uhh we got an invalid filetype in the house. upload a supported filetype. this is a very, *very*, ***very***, rare error which usually means Sarthak fucked up his code somewhere.';
 			}
 		});
 	await new Promise(resolve => setTimeout(resolve, 2000));
