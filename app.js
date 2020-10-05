@@ -39,7 +39,7 @@ client.on('message', async msg => {
 		    .setURL(msg.author.avatarURL)
 		    .setImage(msg.author.avatarURL)
 		    .setTimestamp();
-		  msg.reply(embed);
+		  msg.channel.send(embed);
 		} else {
 		  //if someone IS mentioned
 		  let embed = new Discord.MessageEmbed()
@@ -48,7 +48,7 @@ client.on('message', async msg => {
 		    .setURL(user.avatarURL)
 		    .setImage(user.avatarURL)
 		    .setTimestamp();
-		  msg.reply(embed);
+		  msg.channel.send(embed);
 		}
 	} else if (msg.content.toLowerCase().startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		// Sarthak Say Command
