@@ -29,24 +29,27 @@ client.on('message', async msg => {
 	      		pingRes.edit(`Pong! **${(end - start).toFixed(0)}ms**`);
 	    	});
 	} else if (msg.content.toLowerCase().startsWith("sarthak avatar")) {
-      	var user;
-        user = msg.mentions.users.first(); //mentioned user, if any
-        if (!user) {
-          // if someone isn't mentioned
-          getuseravatar(msg.author);
-        } else {
-          //if someone IS mentioned
-          getuseravatar(user);
-        }
-        function getuseravatar(user) {
-          var embed = new Discord.RichEmbed()
-            .setColor("RANDOM") //can specifiy color of embed here
-            .setTitle("Avatar")
-            .setURL(user.avatarURL)
-            .setImage(user.avatarURL)
-            .setTimestamp();
-          msg.reply(embed);
-        }
+		var user;
+		user = msg.mentions.users.first(); //mentioned user, if any
+		if (!user) {
+		  // if someone isn't mentioned
+		  let embed = new Discord.RichEmbed()
+		    .setColor("RANDOM")
+		    .setTitle("Avatar")
+		    .setURL(msg.author.avatarURL)
+		    .setImage(msg.author.avatarURL)
+		    .setTimestamp();
+		  msg.reply(embed);
+		} else {
+		  //if someone IS mentioned
+		  let embed = new Discord.RichEmbed()
+		    .setColor("RANDOM") //can specifiy color of embed here
+		    .setTitle("Avatar")
+		    .setURL(user.avatarURL)
+		    .setImage(user.avatarURL)
+		    .setTimestamp();
+		  msg.reply(embed);
+		}
 	} else if (msg.content.toLowerCase().startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		// Sarthak Say Command
 		let sayBool = true;
