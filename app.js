@@ -33,22 +33,28 @@ client.on('message', async msg => {
 		user = msg.mentions.users.first(); //mentioned user, if any
 		if (!user) {
 		  // if someone isn't mentioned
-		  let embed = new Discord.RichEmbed()
-		    .setColor("RANDOM")
-		    .setTitle("Avatar")
-		    .setURL(msg.author.avatarURL)
-		    .setImage(msg.author.avatarURL)
-		    .setTimestamp();
-		  msg.channel.send(embed);
+		  msg.reply("", {
+		      embed: {
+			color: 0xf01fb1,
+			title: "Avatar",
+			url: msg.author.avatarURL,
+			image: {
+				url: msg.author.avatarURL,
+			},
+		      },
+		 });
 		} else {
 		  //if someone IS mentioned
-		  let embed = new Discord.RichEmbed()()
-		    .setColor("RANDOM") //can specifiy color of embed here
-		    .setTitle("Avatar")
-		    .setURL(user.avatarURL)
-		    .setImage(user.avatarURL)
-		    .setTimestamp();
-		  msg.channel.send(embed);
+		  msg.reply("", {
+		      embed: {
+			color: 0xf01fb1,
+			title: "Avatar",
+			url: user.avatarURL,
+			image: {
+				url: user.avatarURL,
+			},
+		      },
+		 });
 		}
 	} else if (msg.content.toLowerCase().startsWith("sarthak say ") && msg.author.id !== '220352311422091264') {
 		// Sarthak Say Command
