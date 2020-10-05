@@ -33,7 +33,7 @@ client.on('message', async msg => {
 		user = msg.mentions.users.first(); //mentioned user, if any
 		if (!user) {
 		  // if someone isn't mentioned
-		  let embed = new Discord.MessageEmbed()
+		  let embed = new Discord.RichEmbed()
 		    .setColor("RANDOM")
 		    .setTitle("Avatar")
 		    .setURL(msg.author.avatarURL)
@@ -42,7 +42,7 @@ client.on('message', async msg => {
 		  msg.channel.send(embed);
 		} else {
 		  //if someone IS mentioned
-		  let embed = new Discord.MessageEmbed()
+		  let embed = new Discord.RichEmbed()()
 		    .setColor("RANDOM") //can specifiy color of embed here
 		    .setTitle("Avatar")
 		    .setURL(user.avatarURL)
