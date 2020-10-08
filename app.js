@@ -57,8 +57,8 @@ client.on('message', async msg => {
 		 });
 		}
 	} else if (msg.content.toLowerCase().startsWith("sarthak clear")) {
-		const args = msg.content.split(' ').slice(1); // All arguments behind the command
-		const amount = args[1]; // Amount of messages which should be deleted
+		var args = msg.content.split(' ').slice(1); // All arguments behind the command
+		var amount = args[1]; // Amount of messages which should be deleted
 
 		if (!amount) return msg.reply('You haven\'t given an amount of messages which should be deleted!'); // Checks if the `amount` parameter is given
 		if (isNaN(amount)) return msg.reply('The amount parameter isn`t a number!'); // Checks if the `amount` parameter is a number. If not, the command throws an error
@@ -68,6 +68,8 @@ client.on('message', async msg => {
 		
 		if (msg.author.id === '220352311422091264') {
 			msg.delete(); // deletes command message
+		} else {
+			amount += 1;
 		}
 
 		msg.channel.fetchMessages({
