@@ -66,7 +66,7 @@ client.on('message', async msg => {
 		if (amount > 100) return msg.reply('You can`t delete more than 100 messages at once!'); // Checks if the `amount` integer is bigger than 100
 		if (amount < 1) return msg.reply('You have to delete at least 1 message!'); // Checks if the `amount` integer is smaller than 1
 		
-		if (message.author.id === '220352311422091264') {
+		if (msg.author.id === '220352311422091264') {
 			msg.delete(); // deletes command message
 		}
 
