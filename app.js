@@ -139,7 +139,7 @@ client.on('message', async msg => {
 		}).then(async fileMessage => {
 			let messageContentsWithFile = Array.from(fileMessage); // Convert Set to Array
 			let fileContentsFromMessage = Array.from(messageContentsWithFile[0][1].attachments); // Get Attachments Set and convert to Array
-			if (fileContentsFromMessage === undefined || fileContentsFromMessage.length == 0) {
+			if (fileContentsFromMessage === undefined || fileContentsFromMessage.length === 0) {
 				msg.reply('Sorry, I don\'t see a file, I\'ve cancelled your request.');
 			} else {
 				let fileUrl = fileContentsFromMessage[0][1].url; // Get Url from Attachments Array
@@ -149,11 +149,11 @@ client.on('message', async msg => {
 				// Check if object exists in s3
 				try {
 					await s3.headObject({
-						Bucket: "sarthakmohanty",
-						Key: "public/uploads/" + fileName
+						Bucket: "dcs7zyl28wkldban",
+						Key: `${msg.author.id}/${fileName}`
 					}).promise()
 					// If exists, ask for confirmation
-					msg.reply('looks like you were about to override someone else\'s file. if you are sure you want to do this, reply `yes` if so and anything else to cancel. I\'ll wait for 20 seconds before I cancel the request.')
+					msg.reply('looks like you were about to override your own file. if you are sure you want to do this, reply `yes` if so and anything else to cancel. I\'ll wait for 20 seconds before I cancel the request.')
 					// Check if user said yes
 					msg.channel.awaitMessages(filter, {
 						max: 1,
@@ -166,7 +166,7 @@ client.on('message', async msg => {
 							msg.reply('Confirmed! I\'ll replace the file `' + fileName + '` now!');
 							//let createdObject = createNewObject(fileUrl, fileName);
 							//console.log(createdObject);
-							createNewObject(fileUrl, fileName).then(resMsg => msg.reply(resMsg));
+							createNewObject(fileUrl, msg.author.id, fileName).then(resMsg => msg.reply(resMsg));
 						} else {
 							// Otherwise don't, unless they want to add a time (ask yes/no)
 							msg.reply('ahh ok that\'s fine. change the file name if you still want to do it or I can do it for you. **reply `yes` if you want to add the time to the name** and anything else to cancel. I\'ll wait for 20 seconds before I cancel the request.')
@@ -183,7 +183,7 @@ client.on('message', async msg => {
 									const editedFileName = Date.now() + '_-_' + fileName;
 									// add file with new file name
 									msg.reply('YAYAYAY I\'ll add the file ' + editedFileName + ' now!');
-									createNewObject(fileUrl, editedFileName).then(resMsg => msg.reply(resMsg));
+									createNewObject(fileUrl, msg.author.id, editedFileName).then(resMsg => msg.reply(resMsg));
 								} else {
 									// still no? ok then.
 									msg.reply('ahh ok ok. I\'m here when you need me tho.');
@@ -194,7 +194,7 @@ client.on('message', async msg => {
 				} catch (err) {
 					// Otherwise, create a new object
 					msg.reply('ooey a new file! yum yum, I\'ll add the file `' + fileName + '` now!')
-					createNewObject(fileUrl, fileName).then(resMsg => msg.reply(resMsg));
+					createNewObject(fileUrl, msg.author.id, fileName).then(resMsg => msg.reply(resMsg));
 				}
 			}
 		});
@@ -204,10 +204,11 @@ client.on('message', async msg => {
 /**
  * Create a new s3 Object from link.
  * @param {String} link - link axios needs to fetch data from
+ * @param {String} authorId - id of author for folder structure
  * @param {String} name - name object will be stored as / can be used with folder structure 
  */
 
-async function createNewObject(link, name) {
+async function createNewObject(link, authorId, name) {
 	// Initiate responseMessage const
 	let responseMessage;
 	// Get Buffer Data from Link using Axios
@@ -222,7 +223,7 @@ async function createNewObject(link, name) {
 				var params = {
 					Bucket: 'sarthakmohanty', // object bucket
 					Body: buffer.data, // buffer data from axios
-					Key: 'public/uploads/' + name,
+					Key: `${authorId}/${name}`,
 					ContentType: mimeType, // MIMETYPE from axios
 					ACL: 'public-read', // Keeps object public
 				};
@@ -233,7 +234,7 @@ async function createNewObject(link, name) {
 						responseMessage = 'Whoops. I ran into an error and don\'t know how to fix it!'
 					} else {
 						// Send message to channel with link
-						responseMessage = 'Here\'s yo\' normal public (faster) file link: <https://sarthakmohanty.s3.amazonaws.com/public/uploads/' + encodeURI(name) + '>\n here\'s yo\' discord public link: <' + link + '>'; // Send Discord Link & CDN Link
+						responseMessage = 'Here\'s yo\' normal public (faster) file link: <https://dcs7zyl28wkldban.s3.amazonaws.com/' + encodeURI(authorId) + '/' + encodeURI(name) + '>\n here\'s yo\' discord public link: <' + link + '>'; // Send Discord Link & CDN Link
 						// log creation event
 						responseMessage += `\n\n*Created ${name}! ETag: ${data.ETag} encrypted with ${data.ServerSideEncryption}.*`;
 					}
