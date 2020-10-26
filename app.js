@@ -149,7 +149,7 @@ client.on('message', async msg => {
 				// Check if object exists in s3
 				try {
 					await s3.headObject({
-						Bucket: "dcs7zyl28wkldban",
+						Bucket: 'dcs7zyl28wkldban',
 						Key: `${msg.author.id}/${fileName}`
 					}).promise()
 					// If exists, ask for confirmation
@@ -221,7 +221,7 @@ async function createNewObject(link, authorId, name) {
 			if (mimeType.length !== 0) {
 				// Set params to upload to s3
 				var params = {
-					Bucket: 'sarthakmohanty', // object bucket
+					Bucket: 'dcs7zyl28wkldban', // object bucket
 					Body: buffer.data, // buffer data from axios
 					Key: `${authorId}/${name}`,
 					ContentType: mimeType, // MIMETYPE from axios
