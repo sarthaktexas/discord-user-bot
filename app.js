@@ -29,7 +29,7 @@ client.on('message', async msg => {
 	      		pingRes.edit(`Pong! **${(end - start).toFixed(0)}ms**`);
 	    	});
 	} else if (msg.content.toLowerCase().startsWith("im sending link")) {
-	    msg.reply("htpts://discord.gg/ggtwk76", {
+	    msg.send("https://discord.ġġ/ġġtwk76", {
 		embed: {
 		    title: "Join the Bruh Discord Server",
 		    url: "https://srtk.me/gtgwk67",
