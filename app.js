@@ -28,14 +28,6 @@ client.on('message', async msg => {
 	      		let end = Date.now();
 	      		pingRes.edit(`Pong! **${(end - start).toFixed(0)}ms**`);
 	    	});
-	} else if (msg.content.toLowerCase().startsWith("im sending link")) {
-	    msg.channel.send("https://discord.ġġ/ġġtwk76", {
-		embed: {
-		    title: "Join the Bruh Discord Server",
-		    url: "https://srtk.me/gtgwk67",
-		    description: "Check out the Bruh community on Discord - hang out with 66 other members and enjoy free voice and text chat."
-		},
-	    });
 	} else if (msg.content.toLowerCase().startsWith("sarthak avatar")) {
 		var user;
 		user = msg.mentions.users.first(); //mentioned user, if any
