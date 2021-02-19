@@ -150,7 +150,7 @@ client.on('message', async msg => {
 				try {
 					await s3.headObject({
 						Bucket: 'dcs7zyl28wkldban',
-						Key: `${msg.author.id}/${fileName}`
+						Key: `angelhacks/${msg.author.id}/${fileName}`
 					}).promise()
 					// If exists, ask for confirmation
 					msg.reply('looks like you were about to override your own file. if you are sure you want to do this, reply `yes` if so and anything else to cancel. I\'ll wait for 20 seconds before I cancel the request.')
@@ -223,7 +223,7 @@ async function createNewObject(link, authorId, name) {
 				var params = {
 					Bucket: 'dcs7zyl28wkldban', // object bucket
 					Body: buffer.data, // buffer data from axios
-					Key: `${authorId}/${name}`,
+					Key: `angelhacks/${authorId}/${name}`,
 					ContentType: mimeType, // MIMETYPE from axios
 					ACL: 'public-read', // Keeps object public
 				};
@@ -234,14 +234,14 @@ async function createNewObject(link, authorId, name) {
 						responseMessage = 'Whoops. I ran into an error and don\'t know how to fix it!'
 					} else {
 						// Send message to channel with link
-						responseMessage = 'Here\'s yo\' normal public (faster) file link: <https://dcs7zyl28wkldban.s3.amazonaws.com/' + encodeURI(authorId) + '/' + encodeURI(name) + '>\n here\'s yo\' discord public link: <' + link + '>'; // Send Discord Link & CDN Link
+						responseMessage = 'Here\'s yo\' normal public (faster) file link: <https://dcs7zyl28wkldban.s3.amazonaws.com/angelhacks/' + encodeURI(authorId) + '/' + encodeURI(name) + '>\n here\'s yo\' discord public link: <' + link + '>'; // Send Discord Link & CDN Link
 						// log creation event
 						responseMessage += `\n\n*Created ${name}! ETag: ${data.ETag} encrypted with ${data.ServerSideEncryption}.*`;
 					}
 				});
 			} else {
 				// Send error message to channel
-				responseMessage = 'uhh we got an invalid filetype in the house. upload a supported filetype. this is a very, *very*, ***very***, rare error which usually means Sarthak fucked up his code somewhere.';
+				responseMessage = 'uhh we got an invalid filetype in the house. upload a supported filetype. this is a very, *very*, ***very***, rare error which usually means Sarthak messed up his code somewhere.';
 			}
 		});
 	await new Promise(resolve => setTimeout(resolve, 2000));
